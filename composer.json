@@ -1,0 +1,23 @@
+{
+    "name": "deniamnet/laravel4-salesforce",
+    "description": "Laravel 4 Salesforce Force.com PHP Toolkit port",
+    "keywords": ["laravel", "salesforce", "crm", "force.com toolkit", "laravel 4"],
+    "license" : "MIT",
+    "authors": [
+        {
+            "name": "Paul Dzenisevich",
+            "email": "deniamnet@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.*",
+        "deniamnet/force-dot-com-toolkit-for-php": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Deniamnet\\Laravel4Salesforce\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
