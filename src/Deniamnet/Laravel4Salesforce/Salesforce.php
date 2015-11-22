@@ -5,6 +5,7 @@ namespace Deniamnet\Laravel4Salesforce;
 use Deniamnet\ForceDotComToolkitForPhp\SforceEnterpriseClient as Client;
 use Deniamnet\ForceDotComToolkitForPhp\LoginScopeHeader as LoginScopeHeader;
 use Illuminate\Config\Repository;
+use Config;
 
 class Salesforce
 {
@@ -13,6 +14,7 @@ class Salesforce
      * Prepare variables.
      */
     public $sf_client;
+    protected $sf_client_scope_header;
 
     /**
      * Constructor.
@@ -27,12 +29,71 @@ class Salesforce
                 $wsdl = __DIR__.'/Wsdl/enterprise.wsdl.xml';
             }
 
+            if ($custom_wsdl = Config::get('salesforce.wsdl')) {
+                $wsdl = $custom_wsdl;
+            }
+
             $this->sf_client->createConnection($wsdl);
 
             return $this;
         } catch (Exception $e) {
             throw new Exception("Exception in constructor: " . $e->getMessage() . "\n\n" . $e->getTraceAsString());
         }
+    }
+
+    /**
+     * Custom: Login as a Portal User.
+     */
+    public function loginAsPortalUser($username = null, $password = null)
+    {
+        /**
+         * Prepare and check credentials.
+         */
+        $username = trim($username);
+        $password = trim($password);
+        if (empty($username)) {
+            throw new Exception("Empty username");
+        }
+        if (empty($password)) {
+            throw new Exception("Empty password");
+        }
+
+        /**
+         * Set login scope header.
+         */
+        $this->sf_client_scope_header = new LoginScopeHeader(
+            Config::get('salesforce.organization_id'),
+            Config::get('salesforce.portal_id')
+        );
+        $this->setLoginScopeHeader($this->sf_client_scope_header);
+
+        /**
+         * Login.
+         */
+        return $this->login($username, $password);
+    }
+
+    /**
+     * Custom: Login as a Super User.
+     */
+    public function loginAsSuperUser()
+    {
+        /**
+         * Set login scope header.
+         */
+        $this->sf_client_scope_header = new LoginScopeHeader(
+            null,
+            null
+        );
+        $this->setLoginScopeHeader($this->sf_client_scope_header);
+
+        /**
+         * Login.
+         */
+        return $this->login(
+            Config::get('salesforce.username'),
+            Config::get('salesforce.password') . Config::get('salesforce.token')
+        );
     }
 
     /**
