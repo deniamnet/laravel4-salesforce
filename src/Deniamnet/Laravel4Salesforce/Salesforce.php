@@ -22,19 +22,34 @@ class Salesforce
     public function __construct(Repository $configExternal)
     {
         try {
+            /**
+             * Prepare the Client.
+             */
             $this->sf_client = new Client();
 
+            /**
+             * Get default WSDL file.
+             */
             $wsdl = $configExternal->get('laravel4-salesforce::wsdl');
             if (empty($wsdl)) {
                 $wsdl = __DIR__.'/Wsdl/enterprise.wsdl.xml';
             }
 
+            /**
+             * Get custom WSDL file.
+             */
             if ($custom_wsdl = Config::get('salesforce.wsdl')) {
                 $wsdl = $custom_wsdl;
             }
 
+            /**
+             * Create connection.
+             */
             $this->sf_client->createConnection($wsdl);
 
+            /**
+             * Return connection.
+             */
             return $this;
         } catch (Exception $e) {
             throw new Exception("Exception in constructor: " . $e->getMessage() . "\n\n" . $e->getTraceAsString());
