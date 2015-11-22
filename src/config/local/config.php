@@ -1,16 +1,16 @@
 <?php
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Salesforce credentials
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Salesforce credentials
+    |--------------------------------------------------------------------------
+    */
 
-	// sandbox
-	'username'    => '',
-	'password' => '',
-	'token' => '',
-	'wsdl' => app_path() . '/wsdl/enterprise.sandbox.wsdl.xml',
+    // sandbox
+    'username'    => '',
+    'password' => '',
+    'token' => '',
+    'wsdl' => app_path() . '/wsdl/enterprise.sandbox.wsdl.xml',
 
 );
