@@ -1,4 +1,6 @@
-<?php namespace Deniamnet\Laravel4Salesforce\Facades;
+<?php
+
+namespace Deniamnet\Laravel4Salesforce\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
