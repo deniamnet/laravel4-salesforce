@@ -10,7 +10,7 @@ Begin by installing this package through Composer. Edit your project's `composer
 
     "require": {
         "laravel/framework": "4.*",
-        "deniamnet/laravel4-salesforce": "1.*"
+        "deniamnet/laravel4-salesforce": "dev-master"
     }
 
 Next, update Composer from the Terminal:
