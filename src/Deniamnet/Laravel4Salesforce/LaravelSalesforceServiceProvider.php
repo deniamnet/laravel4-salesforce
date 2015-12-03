@@ -33,7 +33,6 @@ class LaravelSalesforceServiceProvider extends ServiceProvider {
         $this->app->booting(function() {
             $loader = \Illuminate\Foundation\AliasLoader::getInstance();
             $loader->alias('Salesforce', 'Deniamnet\Laravel4Salesforce\Facades\Salesforce');
-            $loader->alias('SF', 'Deniamnet\Laravel4Salesforce\Facades\Salesforce');
         });
 
         $this->app['salesforce'] = $this->app->share(function($app) {
