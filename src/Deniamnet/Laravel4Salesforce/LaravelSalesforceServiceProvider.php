@@ -27,7 +27,7 @@ class LaravelSalesforceServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('deniamnet/laravel4-salesforce');
+        // $this->package('deniamnet/laravel4-salesforce');
     }
 
     /**
@@ -37,16 +37,16 @@ class LaravelSalesforceServiceProvider extends ServiceProvider
      */
     public function register()
     {   
-        $this->app->booting(function ()
-        {
-            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-            $loader->alias('Salesforce', 'Deniamnet\Laravel4Salesforce\Facades\Salesforce');
-        });
+        // $this->app->booting(function ()
+        // {
+        //     $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        //     $loader->alias('Salesforce', 'Deniamnet\Laravel4Salesforce\Facades\Salesforce');
+        // });
 
-        $this->app['salesforce'] = $this->app->share(function ($app)
-        {
-            return new Salesforce($app['config']);
-        });
+        // $this->app['salesforce'] = $this->app->share(function ($app)
+        // {
+        //     return new Salesforce($app['config']);
+        // });
     }
 
     /**
@@ -56,7 +56,7 @@ class LaravelSalesforceServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('salesforce');
+        // return array('salesforce');
     }
 
 }

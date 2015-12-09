@@ -20,7 +20,7 @@ class Salesforce extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'salesforce';
+        // return 'salesforce';
     }
 
 }

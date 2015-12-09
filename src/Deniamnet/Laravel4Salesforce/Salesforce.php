@@ -8,7 +8,7 @@ namespace Deniamnet\Laravel4Salesforce;
 
 use Config;
 use Exception;
-use Illuminate\Config\Repository;
+// use Illuminate\Config\Repository;
 use Deniamnet\ForceDotComToolkitForPhp\SforceEnterpriseClient as Client;
 use Deniamnet\ForceDotComToolkitForPhp\LoginScopeHeader as LoginScopeHeader;
 
@@ -26,7 +26,7 @@ class Salesforce
     /**
      * Constructor.
      */
-    public function __construct($custom_wsdl_path = null, Repository $configExternal)
+    public function __construct($wsdl_file_path = null)
     {
         try {
             /**
@@ -37,26 +37,24 @@ class Salesforce
             /**
              * Get default WSDL file.
              */
-            $wsdl = trim($configExternal->get('laravel4-salesforce::wsdl'));
-            if (empty($wsdl)) {
-                $wsdl = __DIR__ . '/Wsdl/enterprise.wsdl.xml';
-            }
+            // $wsdl = trim($configExternal->get('laravel4-salesforce::wsdl'));
+            // if (empty($wsdl)) {
+            //     $wsdl = __DIR__ . '/Wsdl/enterprise.wsdl.xml';
+            // }
 
             /**
              * Get default WSDL file from app config.
              */
-            $default_app_wsdl = trim(Config::get('salesforce.wsdl'));
-            if ( ! empty($default_app_wsdl)) {
-                $wsdl = $default_app_wsdl;
-            }
+            // $default_app_wsdl = trim(Config::get('salesforce.wsdl'));
+            // if ( ! empty($default_app_wsdl)) {
+            //     $wsdl = $default_app_wsdl;
+            // }
 
             /**
-             * Get custom WSDL.
+             * Prepare WSDL path.
              */
-            $custom_wsdl_path = trim($custom_wsdl_path);
-            if ( ! empty($custom_wsdl_path)) {
-                $wsdl = $custom_wsdl_path;
-            }
+            $wsdl_file_path = trim($wsdl_file_path);
+            $wsdl = ( ! empty($wsdl_file_path)) ? $wsdl_file_path : null;
 
             /**
              * Check WSDL file.
@@ -75,7 +73,7 @@ class Salesforce
              */
             return $this;
         } catch (Exception $e) {
-            throw new Exception("Exception in Salesforce constructor: " . $e->getMessage() . "\n\n" . $e->getTraceAsString());
+            throw new Exception("Exception in Salesforce constructor: " . $e->getMessage());
         }
     }
 
