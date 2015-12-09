@@ -1,10 +1,17 @@
 <?php
 
+// ----------------------------------------------------------------------------
+
 namespace Deniamnet\Laravel4Salesforce;
+
+// ----------------------------------------------------------------------------
 
 use Illuminate\Support\ServiceProvider;
 
-class LaravelSalesforceServiceProvider extends ServiceProvider {
+// ----------------------------------------------------------------------------
+
+class LaravelSalesforceServiceProvider extends ServiceProvider
+{
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -30,12 +37,14 @@ class LaravelSalesforceServiceProvider extends ServiceProvider {
      */
     public function register()
     {   
-        $this->app->booting(function() {
+        $this->app->booting(function ()
+        {
             $loader = \Illuminate\Foundation\AliasLoader::getInstance();
             $loader->alias('Salesforce', 'Deniamnet\Laravel4Salesforce\Facades\Salesforce');
         });
 
-        $this->app['salesforce'] = $this->app->share(function($app) {
+        $this->app['salesforce'] = $this->app->share(function ($app)
+        {
             return new Salesforce($app['config']);
         });
     }
@@ -51,3 +60,5 @@ class LaravelSalesforceServiceProvider extends ServiceProvider {
     }
 
 }
+
+// ----------------------------------------------------------------------------

@@ -1,11 +1,18 @@
 <?php
 
+// ----------------------------------------------------------------------------
+
 namespace Deniamnet\Laravel4Salesforce;
 
+// ----------------------------------------------------------------------------
+
+use Config;
+use Exception;
+use Illuminate\Config\Repository;
 use Deniamnet\ForceDotComToolkitForPhp\SforceEnterpriseClient as Client;
 use Deniamnet\ForceDotComToolkitForPhp\LoginScopeHeader as LoginScopeHeader;
-use Illuminate\Config\Repository;
-use Config;
+
+// ----------------------------------------------------------------------------
 
 class Salesforce
 {
@@ -14,12 +21,12 @@ class Salesforce
      * Prepare variables.
      */
     public $sf_client;
-    protected $sf_client_scope_header;
+    public $sf_client_scope_header;
 
     /**
      * Constructor.
      */
-    public function __construct(Repository $configExternal)
+    public function __construct($custom_wsdl_path = null, Repository $configExternal)
     {
         try {
             /**
@@ -30,16 +37,32 @@ class Salesforce
             /**
              * Get default WSDL file.
              */
-            $wsdl = $configExternal->get('laravel4-salesforce::wsdl');
+            $wsdl = trim($configExternal->get('laravel4-salesforce::wsdl'));
             if (empty($wsdl)) {
-                $wsdl = __DIR__.'/Wsdl/enterprise.wsdl.xml';
+                $wsdl = __DIR__ . '/Wsdl/enterprise.wsdl.xml';
             }
 
             /**
-             * Get custom WSDL file.
+             * Get default WSDL file from app config.
              */
-            if ($custom_wsdl = Config::get('salesforce.wsdl')) {
-                $wsdl = $custom_wsdl;
+            $default_app_wsdl = trim(Config::get('salesforce.wsdl'));
+            if ( ! empty($default_app_wsdl)) {
+                $wsdl = $default_app_wsdl;
+            }
+
+            /**
+             * Get custom WSDL.
+             */
+            $custom_wsdl_path = trim($custom_wsdl_path);
+            if ( ! empty($custom_wsdl_path)) {
+                $wsdl = $custom_wsdl_path;
+            }
+
+            /**
+             * Check WSDL file.
+             */
+            if ( ! is_file($wsdl)) {
+                throw new Exception("Please load a valid WSDL file.");
             }
 
             /**
@@ -52,7 +75,7 @@ class Salesforce
              */
             return $this;
         } catch (Exception $e) {
-            throw new Exception("Exception in constructor: " . $e->getMessage() . "\n\n" . $e->getTraceAsString());
+            throw new Exception("Exception in Salesforce constructor: " . $e->getMessage() . "\n\n" . $e->getTraceAsString());
         }
     }
 
@@ -67,10 +90,10 @@ class Salesforce
         $username = trim($username);
         $password = trim($password);
         if (empty($username)) {
-            throw new Exception("Empty username");
+            throw new Exception("Empty username.");
         }
         if (empty($password)) {
-            throw new Exception("Empty password");
+            throw new Exception("Empty password.");
         }
 
         /**
@@ -130,7 +153,7 @@ class Salesforce
     /**
      * Enterprise Client: Update.
      */
-    public function update($sObjects, $type, $assignment_header = NULL, $mru_header = NULL)
+    public function update($sObjects, $type, $assignment_header = null, $mru_header = null)
     {
         return $this->sf_client->update($sObjects, $type, $assignment_header, $mru_header);
     }
@@ -154,7 +177,7 @@ class Salesforce
     /*
      * Base Client: Create connection.
      */
-    public function createConnection($wsdl, $proxy = NULL, $soap_options = array())
+    public function createConnection($wsdl, $proxy = null, $soap_options = array())
     {
         return $this->sf_client->createConnection($wsdl, $proxy, $soap_options);
     }
@@ -194,7 +217,7 @@ class Salesforce
     /*
      * Base Client: Describe layout.
      */
-    public function describeLayout($type, array $recordTypeIds = NULL)
+    public function describeLayout($type, array $recordTypeIds = null)
     {
         return $this->sf_client->describeLayout($type, $recordTypeIds);
     }
@@ -402,7 +425,7 @@ class Salesforce
     /*
      * Base Client: Query all.
      */
-    public function queryAll($query, $queryOptions = NULL)
+    public function queryAll($query, $queryOptions = null)
     {
         return $this->sf_client->queryAll($query, $queryOptions);
     }
@@ -577,3 +600,5 @@ class Salesforce
     }
 
 }
+
+// ----------------------------------------------------------------------------
